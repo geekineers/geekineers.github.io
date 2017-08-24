@@ -4,10 +4,14 @@
 
 .header-intro {
     font-size: 18px;
-    color: #aaa;
+    color: #000;
+
+    p {
+        color: #aaa;    
+    }
 }
 .header-intro a, .header-intro a:visited {
-    color: #aaa;
+    color: #000;
 }
 .header-intro a:hover {
     color: $brand-color;
@@ -16,21 +20,21 @@
 
 .header-container {
     position: fixed;
-    bottom: 0px;
+    top: 0px;
     width: 100%;
     height: 70px;
-    background: #3366ff;
-    background-image: -moz-linear-gradient(right top, $from 0%, $to 100%);
-    background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, $from), color-stop(1, $to));
-    background: -webkit-linear-gradient(right top, $from 0%, $to 100%);
-    background: -o-linear-gradient(right top, $from 0%, $to 100%);
-    background: -ms-linear-gradient(right top, $from 0%, $to 100%);
-    background: linear, right top, $from 0%, $to 100%;
+    background: #e37222;
+    // background-image: -moz-linear-gradient(right top, $from 0%, $to 100%);
+    // background-image: -webkit-gradient(linear, right top, left bottom, color-stop(0, $from), color-stop(1, $to));
+    // background: -webkit-linear-gradient(right top, $from 0%, $to 100%);
+    // background: -o-linear-gradient(right top, $from 0%, $to 100%);
+    // background: -ms-linear-gradient(right top, $from 0%, $to 100%);
+    // background: linear, right top, $from 0%, $to 100%;
     opacity: 0.95;
     z-index: 10;
-    -webkit-transition: 0.5s;
-    -moz-transition: 0.5s;
-    transition: 0.5s;
+    -webkit-transition: 0.25s;
+    -moz-transition: 0.25s;
+    transition: 0.25s;
 }
 
 // Header hiding
@@ -51,16 +55,16 @@
 }
 
 .headroom {
-    @include transition(transform, 200ms, linear);
+    @include transition(transform, 200ms, ease-in-out);
 }
 
 .headroom--pinned {
-    display: block;
+    // display: block;
     @include transform(translateY(0%));
 }
 .headroom--unpinned {
     // display: none;
-    @include transform(translateY(100%));
+    @include transform(translateY(-100%));
 }
 
 // Avatar
@@ -95,7 +99,7 @@
     padding: 1em 0;
     display: block;
     font-weight: 600;
-    left: 60px;
+    left: 15px;
 
     &,
     &:visited, &:hover {
@@ -103,6 +107,11 @@
         color: #7923D5;
     }
 }
+
+.site-title img {
+    height: 32px;
+}
+
 
 a .site-title {
     color: #5badf0;
@@ -341,4 +350,26 @@ span.arrow {
     position: relative;
     top: 0;
     font-size: 17px;
+}
+
+// TABLES
+
+tbody tr:nth-child(odd) {
+    background-color: #f6f8fa;
+}
+
+th {
+    padding-left: 13pt;
+    padding-right: 13pt;
+    padding-top: 6pt;
+    padding-bottom: 6pt;
+    text-align: left !important;
+    font-weight: bold;
+}
+
+td {
+    padding-left: 13pt;
+    padding-right: 13pt;
+    padding-top: 6pt;
+    padding-bottom: 6pt;
 }

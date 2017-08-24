@@ -182,7 +182,8 @@ blockquote {
 
 pre,
 code {
-    font-size: 17px;
+    // font-size: 17px;
+    font-size: $base_font_size * 0.90;
     font-family: 'Menlo', 'Monaco', "Courier New", monospace;
     white-space: pre-wrap;
     border-radius: 3px;
@@ -229,7 +230,7 @@ pre {
 .wrapper {
     max-width: 600px;
     margin: 0 auto;
-    padding: 50px 0px;
+    padding: 120px 0px;
     @extend %clearfix;
 
     @include media-query($on-laptop) {

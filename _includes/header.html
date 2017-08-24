@@ -1,7 +1,6 @@
 
 
 <div class="header-container" id="header-container">
-
 <!-- Site navigation -->
   <nav class="site-nav">
     <div class="trigger">
@@ -11,19 +10,21 @@
         {% endif %}
       {% endfor %}
       <a class="page-link" href="{{ "/feed.xml" | prepend: site.baseurl }}">RSS</a>
-      <a class="twitter page-link" href="https://twitter.com/fffabs"><span class="icon-twitter"></span></a>
-      <a class="facebook page-link" href="https://www.facebook.com/fffabs"><span class="icon-facebook"></span></a>
+      <a class="web page-link" href="http://8layertech.com"><i class='fa fa-globe'></i></a>
+      <a class="twitter page-link" href="https://twitter.com/8layertech"><span class="icon-twitter"></span></a>
+      <a class="facebook page-link" href="https://web.facebook.com/my8layer/"><span class="icon-facebook"></span></a>
+      <a class="github page-link" href="https://github.com/geekineers"><i class='fa fa-github'></i></a>
     </div>
   </nav>
 
   <!-- The title of the site -->
-  <header class="site-header">
-    <a href="{{ site.baseurl }}/">
-      <div class="avatar">
-        <img src="/assets/images/avatar.png" />
-      </div>
-    </a>
-    <!-- <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a> -->
-  </header>
-
+  <!-- <header class="site-header"> -->
+    <!-- <a href="{{ site.baseurl }}/">
+       <div class="avatar">
+        <img src="/assets/images/geekineers-white.png" />
+      </div> 
+    </a> -->
+    <!-- <a class="site-title" href="{{ site.baseurl }}/">{{ site.title }}</a>   -->
+    <a class="site-title" href="{{ site.baseurl }}/"><img src="/assets/images/geekineers-white.png" /></a> 
+  <!-- </header> -->
 </div>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width initial-scale=1">
+
+  <title>Modelling a dynamic entity-based decision table in an RDBMS</title>
+  <meta name="description" content="Usually local government units have different tax schedules for different types of fees. Let’s take for example taxes for businesses which is computed during...">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.8/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+  <link rel="canonical" href="http://0.0.0.0:4000/modelling-dynamic-entity-based/">
+  <link rel="alternate" type="application/atom+xml" title="geekineers" href="http://0.0.0.0:4000/feed.xml" />
+</head>
+
+  <body>
+    
+
+<div class="header-container" id="header-container">
+<!-- Site navigation -->
+  <nav class="site-nav">
+    <div class="trigger">
+      
+        
+        <a class="page-link" href="/about/">About</a>
+        
+      
+        
+      
+        
+      
+        
+      
+      <a class="page-link" href="/feed.xml">RSS</a>
+      <a class="web page-link" href="http://8layertech.com"><i class='fa fa-globe'></i></a>
+      <a class="twitter page-link" href="https://twitter.com/8layertech"><span class="icon-twitter"></span></a>
+      <a class="facebook page-link" href="https://web.facebook.com/my8layer/"><span class="icon-facebook"></span></a>
+      <a class="github page-link" href="https://github.com/geekineers"><i class='fa fa-github'></i></a>
+    </div>
+  </nav>
+
+  <!-- The title of the site -->
+  <!-- <header class="site-header"> -->
+    <!-- <a href="/">
+       <div class="avatar">
+        <img src="/assets/images/geekineers-white.png" />
+      </div> 
+    </a> -->
+    <!-- <a class="site-title" href="/">geekineers</a>   -->
+    <a class="site-title" href="/"><img src="/assets/images/geekineers-white.png" /></a> 
+  <!-- </header> -->
+</div>
+
+      <div class="wrapper">
+        <div class="page-content">
+          <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Modelling a dynamic entity-based decision table in an RDBMS</h1>
+    <p class="post-meta">July 24, 2017 • Migs Cabral</p>
+  </header>
+
+  <!-- Beginning Twitter sharing Large button -->
+  <a class="twitter-share-button" href="https://twitter.com/share"
+  data-related="twitterdev"
+  data-size="large"
+  data-count="horizontal">
+  Tweet
+  </a>
+  <!-- End of Twitter sharing button -->
+
+  <article class="post-content">
+    <p>Usually local government units have different tax schedules for different types of fees. Let’s take for example taxes for businesses which is computed during renewal of business permits.</p>
+
+<p><em>Table 1. Business Tax Schedule, with 2 Parameters</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Business Categories</th>
+      <th>Gross Sales</th>
+      <th style="text-align: right">Tax</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A</td>
+      <td>&lt; 10000</td>
+      <td style="text-align: right">198.00</td>
+    </tr>
+    <tr>
+      <td>A</td>
+      <td>&gt;= 10000 &amp; &lt; 15000</td>
+      <td style="text-align: right">264.00</td>
+    </tr>
+    <tr>
+      <td>A</td>
+      <td>&gt;= 15000 &amp; &lt; 20000</td>
+      <td style="text-align: right">362.00</td>
+    </tr>
+    <tr>
+      <td><strong>…</strong></td>
+      <td><strong>…</strong></td>
+      <td style="text-align: right"><strong>…</strong></td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>&lt; 1000</td>
+      <td style="text-align: right">21.60</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>&gt;= 1000  &amp; &lt; 2000</td>
+      <td style="text-align: right">39.60</td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td>&gt;= 2000  &amp; &lt; 3000</td>
+      <td style="text-align: right">60.00</td>
+    </tr>
+    <tr>
+      <td><strong>…</strong></td>
+      <td><strong>…</strong></td>
+      <td style="text-align: right"><strong>…</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>Given the table above, to determine the tax we need to know the Business Category and Gross Sales of the business. With that in mind we can think of representing this just a simple table, say <code>reference_business_tax</code>, with 4 fields : <code>business_category</code> , <code>min_gross_sales</code>, <code>max_gross_sales</code>, <code>tax</code>.</p>
+
+<p><em>Image 1. UML ERD for table reference_business_tax</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/reference_business_taxes.png">
+        <img alt="reference_business_taxes" src="/assets/2017-07-24-modelling-dynamic-entity-based/reference_business_taxes.png" style="width: 35%;" />
+    </a>
+</center>
+
+<hr />
+
+<p>Hoping that tax schedules are that simple, then you encounter something like this within the same tax schedule:</p>
+
+<p><em>Table 2. Continuation of Business Tax Schedule, with 3 Parameters</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Business Categories</th>
+      <th>Business Sub-Categories</th>
+      <th>Gross Sales         </th>
+      <th style="text-align: right">Tax</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>C</td>
+      <td>A</td>
+      <td>&lt; 10000             </td>
+      <td style="text-align: right">99.00</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>A</td>
+      <td>&gt;= 10000 &amp; &lt; 15000  </td>
+      <td style="text-align: right">132.00</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>A</td>
+      <td>&gt;= 15000 &amp; &lt; 20000  </td>
+      <td style="text-align: right">181.00</td>
+    </tr>
+    <tr>
+      <td><strong>…</strong></td>
+      <td><strong>…</strong></td>
+      <td><strong>…</strong>             </td>
+      <td style="text-align: right"><strong>…</strong></td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>B</td>
+      <td>&lt; 1000              </td>
+      <td style="text-align: right">10.80</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>B</td>
+      <td>&gt;= 1000  &amp; &lt; 2000   </td>
+      <td style="text-align: right">19.80</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>B</td>
+      <td>&gt;= 2000  &amp; &lt; 3000   </td>
+      <td style="text-align: right">30.00</td>
+    </tr>
+    <tr>
+      <td><strong>…</strong></td>
+      <td><strong>…</strong></td>
+      <td><strong>…</strong>             </td>
+      <td style="text-align: right"><strong>…</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>Now with an additional parameter, Business Sub-Category, our original design doesn’t fit the tax schedule anymore. There are also other miscellaneous fees included in the computation that has their own reference fee schedule, like the fee for the Business Metal Plate:</p>
+
+<p><em>Table 3. Metal Plate Fee Schedule</em></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Enterprise Scale</th>
+      <th style="text-align: right">Metal Plate Fee</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Micro-Industries</td>
+      <td style="text-align: right">200.00</td>
+    </tr>
+    <tr>
+      <td>Cottage Industries</td>
+      <td style="text-align: right">200.00</td>
+    </tr>
+    <tr>
+      <td>Small scale industries</td>
+      <td style="text-align: right">300.00</td>
+    </tr>
+    <tr>
+      <td>Medium scale Industries</td>
+      <td style="text-align: right">1000.00</td>
+    </tr>
+    <tr>
+      <td>Large scale Industries</td>
+      <td style="text-align: right">1000.00</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr />
+
+<p>The Metal Plate Fee uses a different set of parameters. If we are to model it, our original design can’t accommodate it and we have to create a separate reference table for it.</p>
+
+<p>The challenge for a system like this is you can’t have just a single reference table that could accommodate all fee schedules, also you have to keep in mind that we are designing for the long-term use and maintainability of the product. If we are to create a reference table for each of the fees, then everytime there’s a change in the rules for deriving a business tax (ie. use a different parameter instead of Business Category, or add an additional parameter like Establishment Type) then it would require us to remigrate the tables, the same case would be if there are any other new fees that are introduced through ordinances (see sample reference tables in Image 2). That doesn’t make the system maintainable and could potentially explode to X number of tables.</p>
+
+<p><em>Image 2. Sample reference tables</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/reference_tables.png">
+        <img alt="Sample reference tables" src="/assets/2017-07-24-modelling-dynamic-entity-based/reference_tables.png" style="" />
+    </a>
+</center>
+
+<hr />
+
+<p>Instead of creating a reference table for every fee, we can make use instead of decision tables. A decision table contains decision rules which is composed of the conditions, the conditions states, and the desired actions or results for each state. The structure of a decision table may vary depending on the implementation. In our case we represent the decision table in this manner:</p>
+
+<p><em>Image 3. Different components of a decision table</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/condition_table_diagram.png">
+        <img alt="Different components of a decision table" src="/assets/2017-07-24-modelling-dynamic-entity-based/condition_table_diagram.png" style="" />
+    </a>
+</center>
+
+<hr />
+
+<p>Modelling our solution:</p>
+
+<p><em>Image 4. UML ERD for our decision table implementation</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/condition_table_erd.png">
+        <img alt="UML ERD for our decision table implementation" src="/assets/2017-07-24-modelling-dynamic-entity-based/condition_table_erd.png" style="" />
+    </a>
+</center>
+
+<hr />
+
+<p>Following the design above would allow us to model any decision table based on any entity in the system.</p>
+
+<p>Instead of creating database tables for different fees, we could just create records <code>condition_tables</code> table.</p>
+
+<p>For the columns of the fee table, we create records in <code>condition_fields</code> table and associate it to <code>condition_tables</code> through <code>condition_table_fields</code>.</p>
+
+<p>For every row in the fee table, we create records in <code>condition_record</code>.</p>
+
+<p>For each cell in the row, just create a record in the <code>condition_record_items</code> table and associate it to the corresponding <code>condition_record</code>.</p>
+
+<p>Let’s simulate how the table records would look like for Business Tax (with 3 parameters):</p>
+
+<p><em>Image 5. Relationship of Condition Table and Condition Fields</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-condition-table-field-animated.gif">
+        <img alt="Relationship of Condition Table and Condition Fields" src="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-condition-table-field-animated.gif" style="" />
+    </a>    
+</center>
+
+<hr />
+
+<p>In the diagram above we have a record in <code>condition_tables</code> table for <strong>CTBTX</strong> which represents the condition table for Business Tax.</p>
+
+<p>Condition table <strong>CTBTX</strong> has the following columns: <strong>Business Categories</strong>, <strong>Minimum Gross Sales</strong>, and <strong>Maximum Gross Sales</strong>, which are defined by the following records in <code>condition_fields</code> table, respectively: <strong>CFBCT</strong>, <strong>CFNGR</strong>, and <strong>CFXGR</strong>.</p>
+
+<p>You might ask, where do condition fields come from? Condition fields are just fields from any other table in the system. For example there may be a <code>business_categories</code> table with the field <code>code</code>, and <code>business_earnings</code> table with the field <code>gross</code>. This makes the creation of  condition tables truly dynamic, allowing field from any table in the system to be part of the data structure definition.</p>
+
+<p>The condition fields are associated to the condition table through the <code>condition_table_fields</code> table. Each record in the <code>condition_table_fields</code> table represents a column in the condition table it is associated to (A). The ordering of the columns from left-to-right for a specific condition table is denoted by the <code>order</code> field. All <code>condition_table_fields</code> records are also associated to the condition fields they represent (B). Using these associations we can model each column in the condition table (C). Also, take note of the <code>oper</code> field in <code>condition_table_fields</code> table, it will be useful later as we go through the individual rows in the condition table.</p>
+
+<p><em>Image 6. Relationship of Condition Records to the Condition Table</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-condition-table-record-animated.gif">
+        <img alt="Relationship of Condition Records to the Condition Table" src="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-condition-table-record-animated.gif" style="" />
+    </a>
+</center>
+
+<hr />
+
+<p>The next component that makes up the structure of a condition table are its rows. Each row in the condition table represents the needed state of each parameter to be able to obtain the value at that row. For example, in Image 6, to get the value 264, the Business Category should be = ‘A’, Minimum Gross Sales should be &gt;= 10,000.00, and Maximum Gross Sales should be &lt; 15,000.00. Now if you notice, this is where the <code>oper</code> field comes in. The specific values per parameter should satisfy the conditional operator defined by <code>oper</code>.</p>
+
+<p>Rows of the condition table are maintained in the <code>condition_records</code> table. Each record is associated to the condition table it belongs to (D), and each record represents one row in the condition table (E). The output value for a specific row is also stored in the <code>condition_records</code> table (F).</p>
+
+<p><em>Image 7. Relationship of Condition Record Items to the Condition Record</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-condition-record-items-animated.gif">    
+        <img alt="Relationship of Condition Record Items to the Condition Record" src="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-condition-record-items-animated.gif" style="" />
+    </a>
+</center>
+
+<hr />
+
+<p>The expected state for each parameter per row is stored in the <code>condition_record_items</code> table. Each record in <code>condition_record items</code>, represent a single cell for a specific row in the condition table it is associated to (G).</p>
+
+<p>Here’s a mapping of the entire condition table data structure:</p>
+
+<p><em>Image 8. Full mapping of the condition table data structure</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-full.png">
+        <img alt="Full mapping of condition table data structure" src="/assets/2017-07-24-modelling-dynamic-entity-based/mapping-full.png" style="" />
+    </a>
+</center>
+
+<hr />
+
+<p>Now that the condition table structure is complete, next is we have to be able to retrieve values from the condition table. The retrieval process is fairly simple. Assuming we have this JSON as input:</p>
+
+<pre><code class="language-json">{
+  "params" : {
+    "condition_table" : "CTBTX",
+    "inputs" : [
+      { "condition_field" : "CFBCT", "value" : "B" },
+      { "condition_field" : "CFNGR", "value" : "12000" },
+      { "condition_field" : "CFXGR", "value" : "12000" }
+    ]
+  }
+}
+</code></pre>
+
+<hr />
+
+<p>To be able to retrieve the corresponding <strong><em>condition table</em></strong> entry we just have to access the condition table indicated in the input param, then traverse each <strong><em>condition record</em></strong> of that condition table, then for each condition record traverse each <strong><em>condition record item</em></strong> comparing it to its corresponding input determined by the order of the <strong><em>condition field</em></strong>. Operator used for comparison is the one defined in the <strong><em>condition table fields</em></strong> entry. The input will only be considered as match if all comparison returns true. The <strong><em>condition record value</em></strong> for the first condition record that matches the input is returned and traversal immediately stops.</p>
+
+<p><em>Image 9. Retrieval from a condition table</em></p>
+
+<center>
+    <a href="#" data-featherlight="/assets/2017-07-24-modelling-dynamic-entity-based/retrieval.gif">
+        <img alt="Retrieval from a condition table" src="/assets/2017-07-24-modelling-dynamic-entity-based/retrieval.gif" style="" />
+    </a>
+</center>
+
+
+  </article>
+
+  <hr>
+
+  <div class="question">
+    <h2>Comments?</h2>
+    <p>Have a comment regarding the post above?</p>
+    <a class="twitter-follow-button"
+    href="https://twitter.com/8layertech"
+    data-show-count="true"
+    data-size="large">
+    Follow @8layertech
+    </a>
+    <script type="text/javascript">
+    window.twttr = (function (d, s, id) {
+      var t, js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src= "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+      return window.twttr || (t = { _e: [], ready: function (f) { t._e.push(f) } });
+    }(document, "script", "twitter-wjs"));
+    </script>
+  </div>
+
+  <div class="related">
+    <h2>Related</h2>
+    
+  </div>
+
+</div>
+
+        </div>
+        <footer class="site-footer">
+<p class="small">8Layer Technologies Inc. &copy 2017
+</p>
+</footer>
+
+    </div>
+
+    <script src="//cdn.jsdelivr.net/headroomjs/0.5.0/headroom.min.js"></script>
+    <script type="text/javascript">
+      var el = document.querySelector(".header-container");
+      var headroom  = new Headroom(el, {
+        "offset": 205,
+        "tolerance": 5
+      });
+      headroom.init();
+    </script>
+
+
+    <!-- Twitter Shizzle -->
+    <script type="text/javascript">
+    window.twttr = (function (d, s, id) {
+      var t, js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src= "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+      return window.twttr || (t = { _e: [], ready: function (f) { t._e.push(f) } });
+    }(document, "script", "twitter-wjs"));
+    </script>
+
+    <script src="//code.jquery.com/jquery-latest.js"></script>
+    <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.8/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+  </body>
+</html>

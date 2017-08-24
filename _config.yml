@@ -1,10 +1,10 @@
 # Site settings
-title: "fffabs"
-email: me@fffabs.com
+title: "geekineers"
+email: developers@8layertech.com
 description: > # this means to ignore newlines until "baseurl:"
-  fffabs &copy 2015 - go create!
+  8Layer Technologies Inc. &copy 2017
 baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://f-word.co" # the base hostname & protocol for your site
+url: "http://8layertech.com" # the base hostname & protocol for your site
 twitter_username: fffabs
 github_username:  toxinide
 
@@ -20,3 +20,5 @@ paginate_path: "blog/page/:num/"
 # Minification
 sass:
   style: compressed
+
+future: true
