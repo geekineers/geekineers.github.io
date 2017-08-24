@@ -4,11 +4,11 @@
     <title>geekineers</title>
     <description>8Layer Technologies Inc. &amp;copy 2017
 </description>
-    <link>http://0.0.0.0:4000/</link>
-    <atom:link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Aug 2017 07:16:43 +0800</pubDate>
-    <lastBuildDate>Thu, 24 Aug 2017 07:16:43 +0800</lastBuildDate>
-    <generator>Jekyll v3.5.1</generator>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 24 Aug 2017 11:01:50 +0800</pubDate>
+    <lastBuildDate>Thu, 24 Aug 2017 11:01:50 +0800</lastBuildDate>
+    <generator>Jekyll v3.5.2</generator>
     
       <item>
         <title>Modelling a dynamic entity-based decision table in an RDBMS</title>
@@ -70,7 +70,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;Given the table above, to determine the tax we need to know the Business Category and Gross Sales of the business. With that in mind we can think of representing this just a simple table, say &lt;code&gt;reference_business_tax&lt;/code&gt;, with 4 fields : &lt;code&gt;business_category&lt;/code&gt; , &lt;code&gt;min_gross_sales&lt;/code&gt;, &lt;code&gt;max_gross_sales&lt;/code&gt;, &lt;code&gt;tax&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Given the table above, to determine the tax we need to know the Business Category and Gross Sales of the business. With that in mind we can think of representing this just a simple table, say &lt;code class=&quot;highlighter-rouge&quot;&gt;reference_business_tax&lt;/code&gt;, with 4 fields : &lt;code class=&quot;highlighter-rouge&quot;&gt;business_category&lt;/code&gt; , &lt;code class=&quot;highlighter-rouge&quot;&gt;min_gross_sales&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;max_gross_sales&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;tax&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Image 1. UML ERD for table reference_business_tax&lt;/em&gt;&lt;/p&gt;
 
@@ -226,13 +226,13 @@
 
 &lt;p&gt;Following the design above would allow us to model any decision table based on any entity in the system.&lt;/p&gt;
 
-&lt;p&gt;Instead of creating database tables for different fees, we could just create records &lt;code&gt;condition_tables&lt;/code&gt; table.&lt;/p&gt;
+&lt;p&gt;Instead of creating database tables for different fees, we could just create records &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_tables&lt;/code&gt; table.&lt;/p&gt;
 
-&lt;p&gt;For the columns of the fee table, we create records in &lt;code&gt;condition_fields&lt;/code&gt; table and associate it to &lt;code&gt;condition_tables&lt;/code&gt; through &lt;code&gt;condition_table_fields&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For the columns of the fee table, we create records in &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_fields&lt;/code&gt; table and associate it to &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_tables&lt;/code&gt; through &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_table_fields&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;For every row in the fee table, we create records in &lt;code&gt;condition_record&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For every row in the fee table, we create records in &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_record&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;For each cell in the row, just create a record in the &lt;code&gt;condition_record_items&lt;/code&gt; table and associate it to the corresponding &lt;code&gt;condition_record&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For each cell in the row, just create a record in the &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_record_items&lt;/code&gt; table and associate it to the corresponding &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_record&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Let’s simulate how the table records would look like for Business Tax (with 3 parameters):&lt;/p&gt;
 
@@ -246,13 +246,13 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;In the diagram above we have a record in &lt;code&gt;condition_tables&lt;/code&gt; table for &lt;strong&gt;CTBTX&lt;/strong&gt; which represents the condition table for Business Tax.&lt;/p&gt;
+&lt;p&gt;In the diagram above we have a record in &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_tables&lt;/code&gt; table for &lt;strong&gt;CTBTX&lt;/strong&gt; which represents the condition table for Business Tax.&lt;/p&gt;
 
-&lt;p&gt;Condition table &lt;strong&gt;CTBTX&lt;/strong&gt; has the following columns: &lt;strong&gt;Business Categories&lt;/strong&gt;, &lt;strong&gt;Minimum Gross Sales&lt;/strong&gt;, and &lt;strong&gt;Maximum Gross Sales&lt;/strong&gt;, which are defined by the following records in &lt;code&gt;condition_fields&lt;/code&gt; table, respectively: &lt;strong&gt;CFBCT&lt;/strong&gt;, &lt;strong&gt;CFNGR&lt;/strong&gt;, and &lt;strong&gt;CFXGR&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Condition table &lt;strong&gt;CTBTX&lt;/strong&gt; has the following columns: &lt;strong&gt;Business Categories&lt;/strong&gt;, &lt;strong&gt;Minimum Gross Sales&lt;/strong&gt;, and &lt;strong&gt;Maximum Gross Sales&lt;/strong&gt;, which are defined by the following records in &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_fields&lt;/code&gt; table, respectively: &lt;strong&gt;CFBCT&lt;/strong&gt;, &lt;strong&gt;CFNGR&lt;/strong&gt;, and &lt;strong&gt;CFXGR&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;p&gt;You might ask, where do condition fields come from? Condition fields are just fields from any other table in the system. For example there may be a &lt;code&gt;business_categories&lt;/code&gt; table with the field &lt;code&gt;code&lt;/code&gt;, and &lt;code&gt;business_earnings&lt;/code&gt; table with the field &lt;code&gt;gross&lt;/code&gt;. This makes the creation of  condition tables truly dynamic, allowing field from any table in the system to be part of the data structure definition.&lt;/p&gt;
+&lt;p&gt;You might ask, where do condition fields come from? Condition fields are just fields from any other table in the system. For example there may be a &lt;code class=&quot;highlighter-rouge&quot;&gt;business_categories&lt;/code&gt; table with the field &lt;code class=&quot;highlighter-rouge&quot;&gt;code&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;business_earnings&lt;/code&gt; table with the field &lt;code class=&quot;highlighter-rouge&quot;&gt;gross&lt;/code&gt;. This makes the creation of  condition tables truly dynamic, allowing field from any table in the system to be part of the data structure definition.&lt;/p&gt;
 
-&lt;p&gt;The condition fields are associated to the condition table through the &lt;code&gt;condition_table_fields&lt;/code&gt; table. Each record in the &lt;code&gt;condition_table_fields&lt;/code&gt; table represents a column in the condition table it is associated to (A). The ordering of the columns from left-to-right for a specific condition table is denoted by the &lt;code&gt;order&lt;/code&gt; field. All &lt;code&gt;condition_table_fields&lt;/code&gt; records are also associated to the condition fields they represent (B). Using these associations we can model each column in the condition table (C). Also, take note of the &lt;code&gt;oper&lt;/code&gt; field in &lt;code&gt;condition_table_fields&lt;/code&gt; table, it will be useful later as we go through the individual rows in the condition table.&lt;/p&gt;
+&lt;p&gt;The condition fields are associated to the condition table through the &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_table_fields&lt;/code&gt; table. Each record in the &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_table_fields&lt;/code&gt; table represents a column in the condition table it is associated to (A). The ordering of the columns from left-to-right for a specific condition table is denoted by the &lt;code class=&quot;highlighter-rouge&quot;&gt;order&lt;/code&gt; field. All &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_table_fields&lt;/code&gt; records are also associated to the condition fields they represent (B). Using these associations we can model each column in the condition table (C). Also, take note of the &lt;code class=&quot;highlighter-rouge&quot;&gt;oper&lt;/code&gt; field in &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_table_fields&lt;/code&gt; table, it will be useful later as we go through the individual rows in the condition table.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Image 6. Relationship of Condition Records to the Condition Table&lt;/em&gt;&lt;/p&gt;
 
@@ -264,9 +264,9 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;The next component that makes up the structure of a condition table are its rows. Each row in the condition table represents the needed state of each parameter to be able to obtain the value at that row. For example, in Image 6, to get the value 264, the Business Category should be = ‘A’, Minimum Gross Sales should be &amp;gt;= 10,000.00, and Maximum Gross Sales should be &amp;lt; 15,000.00. Now if you notice, this is where the &lt;code&gt;oper&lt;/code&gt; field comes in. The specific values per parameter should satisfy the conditional operator defined by &lt;code&gt;oper&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The next component that makes up the structure of a condition table are its rows. Each row in the condition table represents the needed state of each parameter to be able to obtain the value at that row. For example, in Image 6, to get the value 264, the Business Category should be = ‘A’, Minimum Gross Sales should be &amp;gt;= 10,000.00, and Maximum Gross Sales should be &amp;lt; 15,000.00. Now if you notice, this is where the &lt;code class=&quot;highlighter-rouge&quot;&gt;oper&lt;/code&gt; field comes in. The specific values per parameter should satisfy the conditional operator defined by &lt;code class=&quot;highlighter-rouge&quot;&gt;oper&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;Rows of the condition table are maintained in the &lt;code&gt;condition_records&lt;/code&gt; table. Each record is associated to the condition table it belongs to (D), and each record represents one row in the condition table (E). The output value for a specific row is also stored in the &lt;code&gt;condition_records&lt;/code&gt; table (F).&lt;/p&gt;
+&lt;p&gt;Rows of the condition table are maintained in the &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_records&lt;/code&gt; table. Each record is associated to the condition table it belongs to (D), and each record represents one row in the condition table (E). The output value for a specific row is also stored in the &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_records&lt;/code&gt; table (F).&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Image 7. Relationship of Condition Record Items to the Condition Record&lt;/em&gt;&lt;/p&gt;
 
@@ -278,7 +278,7 @@
 
 &lt;hr /&gt;
 
-&lt;p&gt;The expected state for each parameter per row is stored in the &lt;code&gt;condition_record_items&lt;/code&gt; table. Each record in &lt;code&gt;condition_record items&lt;/code&gt;, represent a single cell for a specific row in the condition table it is associated to (G).&lt;/p&gt;
+&lt;p&gt;The expected state for each parameter per row is stored in the &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_record_items&lt;/code&gt; table. Each record in &lt;code class=&quot;highlighter-rouge&quot;&gt;condition_record items&lt;/code&gt;, represent a single cell for a specific row in the condition table it is associated to (G).&lt;/p&gt;
 
 &lt;p&gt;Here’s a mapping of the entire condition table data structure:&lt;/p&gt;
 
@@ -294,17 +294,18 @@
 
 &lt;p&gt;Now that the condition table structure is complete, next is we have to be able to retrieve values from the condition table. The retrieval process is fairly simple. Assuming we have this JSON as input:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&quot;language-json&quot;&gt;{
-  &quot;params&quot; : {
-    &quot;condition_table&quot; : &quot;CTBTX&quot;,
-    &quot;inputs&quot; : [
-      { &quot;condition_field&quot; : &quot;CFBCT&quot;, &quot;value&quot; : &quot;B&quot; },
-      { &quot;condition_field&quot; : &quot;CFNGR&quot;, &quot;value&quot; : &quot;12000&quot; },
-      { &quot;condition_field&quot; : &quot;CFXGR&quot;, &quot;value&quot; : &quot;12000&quot; }
-    ]
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;language-json highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;params&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;condition_table&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CTBTX&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;inputs&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;condition_field&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CFBCT&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;B&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;condition_field&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CFNGR&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;12000&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;condition_field&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CFXGR&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&quot;value&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;12000&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
 
 &lt;hr /&gt;
 
@@ -320,8 +321,8 @@
 
 </description>
         <pubDate>Mon, 24 Jul 2017 19:48:43 +0800</pubDate>
-        <link>http://0.0.0.0:4000/modelling-dynamic-entity-based/</link>
-        <guid isPermaLink="true">http://0.0.0.0:4000/modelling-dynamic-entity-based/</guid>
+        <link>http://localhost:4000/modelling-dynamic-entity-based/</link>
+        <guid isPermaLink="true">http://localhost:4000/modelling-dynamic-entity-based/</guid>
         
         
         <category>geekineers</category>

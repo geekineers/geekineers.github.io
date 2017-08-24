@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.8/release/featherlight.min.css" type="text/css" rel="stylesheet" />
-  <link rel="canonical" href="http://0.0.0.0:4000/modelling-dynamic-entity-based/">
-  <link rel="alternate" type="application/atom+xml" title="geekineers" href="http://0.0.0.0:4000/feed.xml" />
+  <link rel="canonical" href="http://localhost:4000/modelling-dynamic-entity-based/">
+  <link rel="alternate" type="application/atom+xml" title="geekineers" href="http://localhost:4000/feed.xml" />
 </head>
 
   <body>
@@ -42,7 +42,7 @@
   </nav>
 
   <!-- The title of the site -->
-  <!-- <header class="site-header"> -->
+  <header class="site-header">
     <!-- <a href="/">
        <div class="avatar">
         <img src="/assets/images/geekineers-white.png" />
@@ -50,7 +50,7 @@
     </a> -->
     <!-- <a class="site-title" href="/">geekineers</a>   -->
     <a class="site-title" href="/"><img src="/assets/images/geekineers-white.png" /></a> 
-  <!-- </header> -->
+  </header>
 </div>
 
       <div class="wrapper">
@@ -130,7 +130,7 @@
 
 <hr />
 
-<p>Given the table above, to determine the tax we need to know the Business Category and Gross Sales of the business. With that in mind we can think of representing this just a simple table, say <code>reference_business_tax</code>, with 4 fields : <code>business_category</code> , <code>min_gross_sales</code>, <code>max_gross_sales</code>, <code>tax</code>.</p>
+<p>Given the table above, to determine the tax we need to know the Business Category and Gross Sales of the business. With that in mind we can think of representing this just a simple table, say <code class="highlighter-rouge">reference_business_tax</code>, with 4 fields : <code class="highlighter-rouge">business_category</code> , <code class="highlighter-rouge">min_gross_sales</code>, <code class="highlighter-rouge">max_gross_sales</code>, <code class="highlighter-rouge">tax</code>.</p>
 
 <p><em>Image 1. UML ERD for table reference_business_tax</em></p>
 
@@ -286,13 +286,13 @@
 
 <p>Following the design above would allow us to model any decision table based on any entity in the system.</p>
 
-<p>Instead of creating database tables for different fees, we could just create records <code>condition_tables</code> table.</p>
+<p>Instead of creating database tables for different fees, we could just create records <code class="highlighter-rouge">condition_tables</code> table.</p>
 
-<p>For the columns of the fee table, we create records in <code>condition_fields</code> table and associate it to <code>condition_tables</code> through <code>condition_table_fields</code>.</p>
+<p>For the columns of the fee table, we create records in <code class="highlighter-rouge">condition_fields</code> table and associate it to <code class="highlighter-rouge">condition_tables</code> through <code class="highlighter-rouge">condition_table_fields</code>.</p>
 
-<p>For every row in the fee table, we create records in <code>condition_record</code>.</p>
+<p>For every row in the fee table, we create records in <code class="highlighter-rouge">condition_record</code>.</p>
 
-<p>For each cell in the row, just create a record in the <code>condition_record_items</code> table and associate it to the corresponding <code>condition_record</code>.</p>
+<p>For each cell in the row, just create a record in the <code class="highlighter-rouge">condition_record_items</code> table and associate it to the corresponding <code class="highlighter-rouge">condition_record</code>.</p>
 
 <p>Let’s simulate how the table records would look like for Business Tax (with 3 parameters):</p>
 
@@ -306,13 +306,13 @@
 
 <hr />
 
-<p>In the diagram above we have a record in <code>condition_tables</code> table for <strong>CTBTX</strong> which represents the condition table for Business Tax.</p>
+<p>In the diagram above we have a record in <code class="highlighter-rouge">condition_tables</code> table for <strong>CTBTX</strong> which represents the condition table for Business Tax.</p>
 
-<p>Condition table <strong>CTBTX</strong> has the following columns: <strong>Business Categories</strong>, <strong>Minimum Gross Sales</strong>, and <strong>Maximum Gross Sales</strong>, which are defined by the following records in <code>condition_fields</code> table, respectively: <strong>CFBCT</strong>, <strong>CFNGR</strong>, and <strong>CFXGR</strong>.</p>
+<p>Condition table <strong>CTBTX</strong> has the following columns: <strong>Business Categories</strong>, <strong>Minimum Gross Sales</strong>, and <strong>Maximum Gross Sales</strong>, which are defined by the following records in <code class="highlighter-rouge">condition_fields</code> table, respectively: <strong>CFBCT</strong>, <strong>CFNGR</strong>, and <strong>CFXGR</strong>.</p>
 
-<p>You might ask, where do condition fields come from? Condition fields are just fields from any other table in the system. For example there may be a <code>business_categories</code> table with the field <code>code</code>, and <code>business_earnings</code> table with the field <code>gross</code>. This makes the creation of  condition tables truly dynamic, allowing field from any table in the system to be part of the data structure definition.</p>
+<p>You might ask, where do condition fields come from? Condition fields are just fields from any other table in the system. For example there may be a <code class="highlighter-rouge">business_categories</code> table with the field <code class="highlighter-rouge">code</code>, and <code class="highlighter-rouge">business_earnings</code> table with the field <code class="highlighter-rouge">gross</code>. This makes the creation of  condition tables truly dynamic, allowing field from any table in the system to be part of the data structure definition.</p>
 
-<p>The condition fields are associated to the condition table through the <code>condition_table_fields</code> table. Each record in the <code>condition_table_fields</code> table represents a column in the condition table it is associated to (A). The ordering of the columns from left-to-right for a specific condition table is denoted by the <code>order</code> field. All <code>condition_table_fields</code> records are also associated to the condition fields they represent (B). Using these associations we can model each column in the condition table (C). Also, take note of the <code>oper</code> field in <code>condition_table_fields</code> table, it will be useful later as we go through the individual rows in the condition table.</p>
+<p>The condition fields are associated to the condition table through the <code class="highlighter-rouge">condition_table_fields</code> table. Each record in the <code class="highlighter-rouge">condition_table_fields</code> table represents a column in the condition table it is associated to (A). The ordering of the columns from left-to-right for a specific condition table is denoted by the <code class="highlighter-rouge">order</code> field. All <code class="highlighter-rouge">condition_table_fields</code> records are also associated to the condition fields they represent (B). Using these associations we can model each column in the condition table (C). Also, take note of the <code class="highlighter-rouge">oper</code> field in <code class="highlighter-rouge">condition_table_fields</code> table, it will be useful later as we go through the individual rows in the condition table.</p>
 
 <p><em>Image 6. Relationship of Condition Records to the Condition Table</em></p>
 
@@ -324,9 +324,9 @@
 
 <hr />
 
-<p>The next component that makes up the structure of a condition table are its rows. Each row in the condition table represents the needed state of each parameter to be able to obtain the value at that row. For example, in Image 6, to get the value 264, the Business Category should be = ‘A’, Minimum Gross Sales should be &gt;= 10,000.00, and Maximum Gross Sales should be &lt; 15,000.00. Now if you notice, this is where the <code>oper</code> field comes in. The specific values per parameter should satisfy the conditional operator defined by <code>oper</code>.</p>
+<p>The next component that makes up the structure of a condition table are its rows. Each row in the condition table represents the needed state of each parameter to be able to obtain the value at that row. For example, in Image 6, to get the value 264, the Business Category should be = ‘A’, Minimum Gross Sales should be &gt;= 10,000.00, and Maximum Gross Sales should be &lt; 15,000.00. Now if you notice, this is where the <code class="highlighter-rouge">oper</code> field comes in. The specific values per parameter should satisfy the conditional operator defined by <code class="highlighter-rouge">oper</code>.</p>
 
-<p>Rows of the condition table are maintained in the <code>condition_records</code> table. Each record is associated to the condition table it belongs to (D), and each record represents one row in the condition table (E). The output value for a specific row is also stored in the <code>condition_records</code> table (F).</p>
+<p>Rows of the condition table are maintained in the <code class="highlighter-rouge">condition_records</code> table. Each record is associated to the condition table it belongs to (D), and each record represents one row in the condition table (E). The output value for a specific row is also stored in the <code class="highlighter-rouge">condition_records</code> table (F).</p>
 
 <p><em>Image 7. Relationship of Condition Record Items to the Condition Record</em></p>
 
@@ -338,7 +338,7 @@
 
 <hr />
 
-<p>The expected state for each parameter per row is stored in the <code>condition_record_items</code> table. Each record in <code>condition_record items</code>, represent a single cell for a specific row in the condition table it is associated to (G).</p>
+<p>The expected state for each parameter per row is stored in the <code class="highlighter-rouge">condition_record_items</code> table. Each record in <code class="highlighter-rouge">condition_record items</code>, represent a single cell for a specific row in the condition table it is associated to (G).</p>
 
 <p>Here’s a mapping of the entire condition table data structure:</p>
 
@@ -354,17 +354,18 @@
 
 <p>Now that the condition table structure is complete, next is we have to be able to retrieve values from the condition table. The retrieval process is fairly simple. Assuming we have this JSON as input:</p>
 
-<pre><code class="language-json">{
-  "params" : {
-    "condition_table" : "CTBTX",
-    "inputs" : [
-      { "condition_field" : "CFBCT", "value" : "B" },
-      { "condition_field" : "CFNGR", "value" : "12000" },
-      { "condition_field" : "CFXGR", "value" : "12000" }
-    ]
-  }
-}
-</code></pre>
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"params"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"condition_table"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CTBTX"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"inputs"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w"> </span><span class="nt">"condition_field"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CFBCT"</span><span class="p">,</span><span class="w"> </span><span class="nt">"value"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"B"</span><span class="w"> </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w"> </span><span class="nt">"condition_field"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CFNGR"</span><span class="p">,</span><span class="w"> </span><span class="nt">"value"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"12000"</span><span class="w"> </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w"> </span><span class="nt">"condition_field"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"CFXGR"</span><span class="p">,</span><span class="w"> </span><span class="nt">"value"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">"12000"</span><span class="w"> </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
 
 <hr />
 
